@@ -9,7 +9,7 @@
             <h3 id="title" class="text"><a href="./index.html"><img id="logo" src="./assets/logo.png">Enough Said</a></h3>
         </header>
         <div id="contents"></div>
-        <footer id="settings"></footer>
+        <footer id="settings"><p class="text"><img id="icon" src="assets/gear.png">Settings</p></footer>
     </div>
     <div id="main">
         <img id="logo" src="./assets/logo.png">
@@ -29,7 +29,8 @@
             width: 400px;
             height: 100vh;
             float: left;
-            background: lightgray
+            background: lightgray;
+            height: 100vw
         }
         #main {
             width: (100vh - 400px);
@@ -62,11 +63,24 @@
             width: 52px;
             padding-left: 8px;
             padding-right: 8px;
-            vertical-align:-6px
+            vertical-align:-6px;
         }
         #sidebar #title {
             padding: 8px;
             font-size: 32px;
+        }
+        #settings #icon {
+            position: relative;
+            top: 8px;
+            width: 20px;
+            margin: 4px;
+        }
+        #settings {
+            position: sticky;
+            float: right;
+            margin-right: 16px;
+            bottom: 10px;
+        
         }
         .subject {
             font-size: 22px;
@@ -81,6 +95,7 @@
             padding: 8px;
             padding-left: 40px
         }
+        
     </style>
     <script>
         //setting default order if none is found
@@ -95,8 +110,9 @@
         //setting html refs
         const contents = document.getElementById("contents")
 
-        console.log(subjectOrder) //test
+        console.log(subjectOrder) //verbose
 
+        //dynamically add subjects
         subjectOrder.forEach(element => {
             var a = document.createElement("a")  
             var img = document.createElement("img")        
