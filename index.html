@@ -8,14 +8,7 @@
         <header id="home">
             <h3 id="title" class="text"><a href="./index.html"><img id="logo" src="./assets/logo.png">Enough Said</a></h3>
         </header>
-        <div id="contents">
-            <a href="index.html" class="text page" id="page"><img class="icon" src="./assets/icons/wires.png">Wires</a><br>
-            <a href="index.html" class="text page" id="page"><img class="icon" src="./assets/icons/the button.png">The Button</a><br>
-            <a href="index.html" class="text page" id="page"><img class="icon" src="./assets/icons/keypads.png">Keypads</a><br>
-            <a href="index.html" class="text page" id="page"><img class="icon" src="./assets/icons/simon says.png">Simon Says</a><br>
-            <a href="index.html" class="text page" id="page"><img class="icon" src="./assets/icons/who's on first.png">Who's on First</a><br>
-            <a href="index.html" class="text page" id="page"><img class="icon" src="./assets/icons/memory.png">Memory</a>
-        </div>
+        <div id="contents"></div>
         <footer id="settings"></footer>
     </div>
     <div id="main">
@@ -24,56 +17,98 @@
         <h1 class="text" id="title" >Enough Said</h1>
         <h2 class="text" id="subtitle">A customizable, interactive, and improved manual for<br>
             Keep Talking and Nobody Explodes (KTaNE).<br>And that's Enough Said.</h2>
-</html>
-<style>
-    .text{
-        font-family: Arial, Helvetica, sans-serif;
-    }
-    #sidebar {
-        width: 400px;
-        height: 100vh;
-        float: left;
-        background: lightgray
-    }
-    #main {
-        width: (100vh - 400px);
-        height: 100vh;
-        text-align: center
-    }
-    #main #logo {
-        width: 250px;
-        position: relative;
-        left: 32px
-    }
-    #main #title {
-        font-size: 48px
-    }
-    #main #subtitle {
-        font-size: 20px;
-        text-align: center;
-    }
-    #sidebar #title #logo {
-        width: 52px;
-        padding-left: 8px;
-        padding-right: 8px;
-        vertical-align:-6px
-    }
-    #sidebar #title {
-        padding: 8px;
-        font-size: 32px;
-    }
-    .page {
-        font-size: 22px;
-    }
-    a {
-        color: black;
-        text-decoration: none;
-    }
-    .icon {
-        width: 30px;
-        vertical-align: -14px;
-        padding: 8px;
-        padding-left: 40px
-    }
+    </div>
+    <style>
+        body {
+            margin: 0;
+        }
+        .text{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #sidebar {
+            width: 400px;
+            height: 100vh;
+            float: left;
+            background: lightgray
+        }
+        #main {
+            width: (100vh - 400px);
+            height: 100vh;
+            text-align: center;
+        }
+        #main #logo {
+            width: 250px;
+            position: relative;
+            left: calc(8% - 80px);
+            top:20px
+        }
+        #main #title {
+            position: relative;
+            font-size: 48px;
+            top: 36px;
+            width: 50%;
+            margin: auto;
+            left: 12.5%;  
+        }
+        #main #subtitle {
+            position: relative;
+            font-size: 20px;
+            top: 52px;
+            width: 50%;
+            margin: auto;
+            left: 12.5%;  
+        }
+        #sidebar #title #logo {
+            width: 52px;
+            padding-left: 8px;
+            padding-right: 8px;
+            vertical-align:-6px
+        }
+        #sidebar #title {
+            padding: 8px;
+            font-size: 32px;
+        }
+        .subject {
+            font-size: 22px;
+        }
+        a {
+            color: black;
+            text-decoration: none;
+        }
+        .icon {
+            width: 30px;
+            vertical-align: -14px;
+            padding: 8px;
+            padding-left: 40px
+        }
+    </style>
+    <script>
+        //setting default order if none is found
+        if(localStorage.getItem("subjectOrder") == null){
+            var subjectOrder = ["Wires", "The Button", "Keypads", "Simon Says", "Who's on First", "Memory", "Morse Code", "Complicated Wires", "Wire Sequences", "Mazes", "Passwords", "Knobs"]
+            localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
+        }
 
-</style>
+        //setting vars
+        var subjectOrder = JSON.parse(localStorage.getItem("subjectOrder"))
+
+        //setting html refs
+        const contents = document.getElementById("contents")
+
+        console.log(subjectOrder) //test
+
+        subjectOrder.forEach(element => {
+            var a = document.createElement("a")  
+            var img = document.createElement("img")        
+            a.href = element.toLowerCase() + ".html"
+            a.className = "text subject"
+            //a.id = "element.toLowerCase()"
+            img.className = "icon"
+            img.src = `./assets/icons/${element.toLowerCase()}.png`
+            a.appendChild(img)
+            a.innerHTML = a.innerHTML + element
+            contents.appendChild(a)
+            contents.appendChild(document.createElement("br"))
+        });
+    </script>
+</html>
