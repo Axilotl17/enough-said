@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Nuff' Said</title>
+        <link rel="icon" type="image/x-icon" href="./assets/logo.png">
+    </head>
+    <div id="sidebar">
+        <header id="home">
+            <h3 id="title" class="text"><a href="./index.html"><img id="logo" src="./assets/logo.png">Enough Said</a></h3>
+        </header>
+        <div id="contents"></div>
+        <footer id="settings"></footer>
+    </div>
+    <div id="main">
+        <img id="logo" src="./assets/logo.png">
+        <br>
+        <h1 class="text" id="title" >Enough Said.</h1>
+        <h2 class="text" id="subtitle">A customizable, interactive, and improved manual for<br>
+            Keep Talking and Nobody Explodes (KTaNE).<br>And that's Enough Said.</h2>
+</html>
+<style>
+    .text{
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    #sidebar {
+        width: 400px;
+        height: 100vh;
+        float: left;
+        background: lightgray
+    }
+    #main {
+        width: (100vh - 400px);
+        height: 100vh;
+        text-align: center
+    }
+    #main #logo {
+        width: 250px;
+        position: relative;
+        left: 32px
+    }
+    #main #title {
+        font-size: 48px
+    }
+    #main #subtitle {
+        font-size: 20px;
+        text-align: center;
+    }
+    #sidebar #title #logo {
+        width: 40px;
+        padding-left: 8px;
+        padding-right: 8px;
+        vertical-align:-6px
+   }
+    #sidebar #title {
+        padding: 8px;
+        font-size: 24px;
+    }
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+</style>
