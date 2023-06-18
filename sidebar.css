@@ -50,6 +50,9 @@ header {
     margin: 6px;
     margin-bottom: 12px;
 }
+header:hover {
+    background-color: rgb(194, 194, 194);
+}
 
 footer {
     position: sticky;
