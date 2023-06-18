@@ -3,6 +3,7 @@
     <head>
         <title>Nuff' Said</title>
         <link rel="icon" type="image/x-icon" href="./assets/logo.png">
+        <link rel="stylesheet" href="./style.css" />
     </head>
     <div id="sidebar">
         <header id="home">
@@ -10,7 +11,7 @@
         </header>
         <div id="contents"></div>
         <footer>
-            <p class="text" id="settings" onclick="rearrange()"><img id="icon" src="assets/gear.png">Settings</p>
+            <p class="text" id="reorder" onclick="reorder()"><img id="icon" src="assets/gear.png">Reorder</p>
             <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a href="https://github.com/BrightShard">BrightShard</a></p>
         </footer>
     </div>
@@ -21,107 +22,6 @@
         <h2 class="text" id="subtitle">A customizable, interactive, and improved manual for<br>
             Keep Talking and Nobody Explodes (KTaNE).<br>And that's Enough Said.</h2>
     </div>
-    <style>
-        body {
-            margin: 0;
-        }
-        .text{
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        #sidebar {
-            width: 400px;
-            height: 100vh;
-            float: left;
-            background: lightgray;
-            height: 100vw
-        }
-        #main {
-            width: (100vh - 400px);
-            height: 100vh;
-            text-align: center;
-        }
-        #main #logo {
-            width: 250px;
-            position: relative;
-            left: calc(8% - 80px);
-            top:20px
-        }
-        #main #title {
-            position: relative;
-            font-size: 48px;
-            top: 36px;
-            width: 50%;
-            margin: auto;
-            left: 12.5%;  
-        }
-        #main #subtitle {
-            position: relative;
-            font-size: 20px;
-            top: 52px;
-            width: 50%;
-            margin: auto;
-            left: 12.5%;  
-        }
-        #sidebar #title #logo {
-            width: 52px;
-            margin-left: 16px;
-            margin-right: 8px;
-            vertical-align:-6px;
-        }
-        #sidebar #title {
-            padding: 8px;
-            font-size: 32px;
-        }
-        #settings #icon {
-            position: relative;
-            top: 8px;
-            width: 20px;
-            margin: 4px;
-        }
-        #settings {
-            float: right;
-            margin-right: 16px;
-        }
-        #credit {
-            float:left;
-            margin-left: 16px;
-            margin-top: 32px;
-            font-size: 14px;
-        }
-        #credit a {
-            color: #0000EE;
-            text-decoration: underline;
-        }
-        footer {
-            position: sticky;
-            bottom: 10px;
-        }
-        .subject-text {
-            font-size: 22px;
-        }
-        a {
-            color: black;
-            text-decoration: none;
-        }
-        .icon {
-            width: 30px;
-            vertical-align: -14px;
-            padding: 4px;
-            padding-right: 8px;
-            padding-left: 40px
-        }
-        .draggable {
-            cursor: move;
-            user-select: none;
-            border-style:dotted;
-            border-width: 2px;
-            margin: 2px;
-            padding-right: 40px;
-        }
-        .subject {
-            margin: 6px;
-        }
-    </style>
     <script>
         //setting default order if none is found
         if(localStorage.getItem("subjectOrder") == null){
@@ -134,18 +34,18 @@
         var subjectElements = []
 
         //setting html refs
-        const settings = document.getElementById("settings")
+        const reorder = document.getElementById("reorder")
         const contents = document.getElementById("contents")
 
         console.log(subjectOrder) //verbose
 
         //dynamically add subjects
-        subjectOrder.forEach(element => {
+        subjectOrder.forEach((element, index) => {
             //create menu item
             var div = document.createElement("div")
             var a = document.createElement("a")  
             var img = document.createElement("img")     
-            a.href = element.toLowerCase() + ".html"
+            div.onclick = function() {window.location.href = element.toLowerCase() + ".html"}
             a.className = "text subject-text"
             img.className = "icon"
             img.src  = `./assets/icons/${element.toLowerCase()}.png`
@@ -162,7 +62,7 @@
             contents.appendChild(element)
         });
 
-        function rearrange() {
+        function reorder() {
             //current dragging element
             let draggingEle;
             let placeholder;
@@ -286,7 +186,8 @@
             subjectElements.forEach(element => {
                 element.classList.add("draggable")
                 element.addEventListener('mousedown', mouseDownHandler)
-                settings.onclick = function() {save()}
+                reorder.onclick = function() {save()}
+                element.onclick = ""
             });
         }
 
@@ -295,6 +196,7 @@
             for(var i = 0; i < subjects.length; i++) {
                 subjectOrder[i] = subjects[i].getAttribute("name")
                 localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
+                window.location.reload()
             }
         }
 
