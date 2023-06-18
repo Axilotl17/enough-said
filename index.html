@@ -1,210 +1,302 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Nuff' Said</title>
-    <link rel="icon" type="image/x-icon" href="./assets/logo.png">
-    <link rel="stylesheet" href="/assets/style.css" />
-</head>
-<div id="sidebar">
-    <header id="home">
-        <h3 id="title" class="text"><a href="./index.html"><img id="logo" src="./assets/logo.png">Enough Said</a></h3>
-    </header>
-    <div id="contents"></div>
-    <footer>
-        <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a
-                href="https://github.com/BrightShard">BrightShard</a></p>
-        <a href="#" class="text" id="settings" onclick="rearrange()">
-            <img id="icon" src="assets/gear.png" />
-            <p>Settings</p>
-        </a>
-    </footer>
-</div>
-<div id="main">
-    <img id="logo" src="./assets/logo.png">
-    <br>
-    <h1 class="text" id="title">Enough Said</h1>
-    <h2 class="text" id="subtitle">A customizable, interactive, and improved manual for<br>
-        Keep Talking and Nobody Explodes (KTaNE).<br>And that's Enough Said.</h2>
-</div>
-<script>
-    //setting default order if none is found
-    if (localStorage.getItem("subjectOrder") == null) {
-        var subjectOrder = ["Wires", "The Button", "Keypads", "Simon Says", "Who's on First", "Memory", "Morse Code", "Complicated Wires", "Wire Sequences", "Mazes", "Passwords", "Knobs"]
-        localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
-    }
-
-    //setting vars
-    var subjectOrder = JSON.parse(localStorage.getItem("subjectOrder"))
-    var subjectElements = []
-
-    //setting html refs
-    const settings = document.getElementById("settings")
-    const contents = document.getElementById("contents")
-
-    console.log(subjectOrder) //verbose
-
-    //dynamically add subjects
-    subjectOrder.forEach(element => {
-        //create menu item
-        var div = document.createElement("div")
-        var a = document.createElement("a")
-        var img = document.createElement("img")
-        var p = document.createElement("p")
-        a.href = element.toLowerCase() + ".html"
-        a.className = "text subject-text"
-        img.className = "icon"
-        img.src = `./assets/icons/${element.toLowerCase()}.png`
-        p.innerHTML = element
-        a.appendChild(img)
-        a.appendChild(p)
-        a.append(document.createElement("br"))
-        div.style = ""
-        div.className = "subject"
-        div.appendChild(a)
-        div.setAttribute("name", element)
-        subjectElements.push(div)
-    });
-    subjectElements.forEach(element => {
-        contents.appendChild(element)
-    });
-
-    function rearrange() {
-        //current dragging element
-        let draggingEle;
-        let placeholder;
-        let isDraggingStarted = false;
-
-        //pos of mouse relative to dragging element
-        let x = 0;
-        let y = 0;
-
-        const swap = function (nodeA, nodeB) {
-            const parentA = nodeA.parentNode;
-            const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
-
-            // move nodeA to before the nodeB
-            nodeB.parentNode.insertBefore(nodeA, nodeB);
-
-            // move nodeB to before the sibling of nodeA
-            parentA.insertBefore(nodeB, siblingA);
+    <head>
+        <title>Nuff' Said</title>
+        <link rel="icon" type="image/x-icon" href="./assets/logo.png">
+    </head>
+    <div id="sidebar">
+        <header id="home">
+            <h3 id="title" class="text"><a href="./index.html"><img id="logo" src="./assets/logo.png">Enough Said</a></h3>
+        </header>
+        <div id="contents"></div>
+        <footer>
+            <p class="text" id="settings" onclick="rearrange()"><img id="icon" src="assets/gear.png">Settings</p>
+            <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a href="https://github.com/BrightShard">BrightShard</a></p>
+        </footer>
+    </div>
+    <div id="main">
+        <img id="logo" src="./assets/logo.png">
+        <br>
+        <h1 class="text" id="title" >Enough Said</h1>
+        <h2 class="text" id="subtitle">A customizable, interactive, and improved manual for<br>
+            Keep Talking and Nobody Explodes (KTaNE).<br>And that's Enough Said.</h2>
+    </div>
+    <style>
+        body {
+            margin: 0;
         }
-
-        const mouseDownHandler = function (e) {
-            draggingEle = e.target;
-
-            //calc mouse pos
-            const rect = draggingEle.getBoundingClientRect();
-            x = e.pageX - rect.left;
-            y = e.pageY - rect.top;
-
-            //attach listeners
-            document.addEventListener('mousemove', mouseMoveHandler);
-            document.addEventListener('mouseup', mouseUpHandler);
+        .text{
+            font-family: Arial, Helvetica, sans-serif;
         }
-
-        const mouseMoveHandler = function (e) {
-            const prevEle = draggingEle.previousElementSibling;
-
-            const draggingRect = draggingEle.getBoundingClientRect();
-
-            //set pos for dragging element
-            draggingEle.style.position = 'absolute'
-            draggingEle.style.top = `${e.pageY - y}px`
-            draggingEle.style.left = `${e.pageX - x}px`
-
-            if (!isDraggingStarted) {
-                //update
-                isDraggingStarted = true;
-
-                //placeholder take height of dragging element
-                placeholder = document.createElement('div');
-                placeholder.classList.add('placeholder');
-
-                draggingEle.parentNode.insertBefore(
-                    placeholder,
-                    draggingEle.nextSibling
-                )
-
-                //set placeholder height
-                placeholder.style.height = `${draggingRect.height}px`
-
-            }
-
-            // //set pos for dragging element
-            // draggingEle.style.position = 'absolute'
-            // draggingEle.style.top = `${e.pageY - y}px`
-            // draggingEle.style.left = `${e.pageX - x}px`
-
-            const nextEle = placeholder.nextElementSibling;
-
-            //literal edge cases
-
-            //moves item to top
-            if (prevEle && isAbove(draggingEle, prevEle)) {
-                // the current order    -> the new order
-                // prevEle              -> placeholder
-                // draggingEle          -> draggingEle
-                // placeholder          -> prevEle
-                swap(placeholder, draggingEle)
-                swap(placeholder, prevEle)
-            }
-
-            //moves item to bottom
-            if (nextEle && isAbove(nextEle, draggingEle)) {
-                // the current order    -> the new order
-                // draggingEle          -> nextEle
-                // placeholder          -> placeholder
-                // nextEle              -> draggingEle
-                swap(nextEle, placeholder);
-                swap(nextEle, draggingEle);
-            }
+        #sidebar {
+            width: 400px;
+            height: 100vh;
+            float: left;
+            background: lightgray;
+            height: 100vw
         }
-
-        const mouseUpHandler = function () {
-            //remove placeholder
-            placeholder && placeholder.parentNode.removeChild(placeholder);
-
-            //reset flag
-            isDraggingStarted = false;
-
-            //remove pos styles
-            draggingEle.style.removeProperty('top');
-            draggingEle.style.removeProperty('left');
-            draggingEle.style.removeProperty('position');
-
-            x = null
-            y = null
-            draggingEle = null
-
-            //remove handlers of 'mousemove' and 'mouseup'
-            document.removeEventListener('mousemove', mouseMoveHandler);
-            document.removeEventListener('mouseup', mouseUpHandler);
+        #main {
+            width: (100vh - 400px);
+            height: 100vh;
+            text-align: center;
         }
-
-        const isAbove = function (nodeA, nodeB) {
-            //get bounding rect of nodes
-            const rectA = nodeA.getBoundingClientRect();
-            const rectB = nodeB.getBoundingClientRect();
-
-            return (rectA.top + rectA.height) / 2 < (rectB.top + rectB.height) / 2
+        #main #logo {
+            width: 250px;
+            position: relative;
+            left: calc(8% - 80px);
+            top:20px
         }
-
-        subjectElements.forEach(element => {
-            element.classList.add("draggable")
-            element.addEventListener('mousedown', mouseDownHandler)
-            settings.onclick = function () {save()}
-        });
-    }
-
-    function save() {
-        subjects = document.getElementsByClassName("subject")
-        for (var i = 0; i < subjects.length; i++) {
-            subjectOrder[i] = subjects[i].getAttribute("name")
+        #main #title {
+            position: relative;
+            font-size: 48px;
+            top: 36px;
+            width: 50%;
+            margin: auto;
+            left: 12.5%;  
+        }
+        #main #subtitle {
+            position: relative;
+            font-size: 20px;
+            top: 52px;
+            width: 50%;
+            margin: auto;
+            left: 12.5%;  
+        }
+        #sidebar #title #logo {
+            width: 52px;
+            margin-left: 16px;
+            margin-right: 8px;
+            vertical-align:-6px;
+        }
+        #sidebar #title {
+            padding: 8px;
+            font-size: 32px;
+        }
+        #settings #icon {
+            position: relative;
+            top: 8px;
+            width: 20px;
+            margin: 4px;
+        }
+        #settings {
+            float: right;
+            margin-right: 16px;
+        }
+        #credit {
+            float:left;
+            margin-left: 16px;
+            margin-top: 32px;
+            font-size: 14px;
+        }
+        #credit a {
+            color: #0000EE;
+            text-decoration: underline;
+        }
+        footer {
+            position: sticky;
+            bottom: 10px;
+        }
+        .subject-text {
+            font-size: 22px;
+        }
+        a {
+            color: black;
+            text-decoration: none;
+        }
+        .icon {
+            width: 30px;
+            vertical-align: -14px;
+            padding: 4px;
+            padding-right: 8px;
+            padding-left: 40px
+        }
+        .draggable {
+            cursor: move;
+            user-select: none;
+            border-style:dotted;
+            border-width: 2px;
+            margin: 2px;
+            padding-right: 40px;
+        }
+        .subject {
+            margin: 6px;
+        }
+    </style>
+    <script>
+        //setting default order if none is found
+        if(localStorage.getItem("subjectOrder") == null){
+            var subjectOrder = ["Wires", "The Button", "Keypads", "Simon Says", "Who's on First", "Memory", "Morse Code", "Complicated Wires", "Wire Sequences", "Mazes", "Passwords", "Knobs"]
             localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
         }
-    }
 
-</script>
+        //setting vars
+        var subjectOrder = JSON.parse(localStorage.getItem("subjectOrder"))
+        var subjectElements = []
 
+        //setting html refs
+        const settings = document.getElementById("settings")
+        const contents = document.getElementById("contents")
+
+        console.log(subjectOrder) //verbose
+
+        //dynamically add subjects
+        subjectOrder.forEach(element => {
+            //create menu item
+            var div = document.createElement("div")
+            var a = document.createElement("a")  
+            var img = document.createElement("img")     
+            a.href = element.toLowerCase() + ".html"
+            a.className = "text subject-text"
+            img.className = "icon"
+            img.src  = `./assets/icons/${element.toLowerCase()}.png`
+            a.appendChild(img)
+            a.innerHTML = a.innerHTML + element
+            a.append(document.createElement("br"))
+            div.style = ""
+            div.className = "subject"
+            div.appendChild(a)
+            div.setAttribute("name", element)
+            subjectElements.push(div)
+        });
+        subjectElements.forEach(element => {
+            contents.appendChild(element)
+        });
+
+        function rearrange() {
+            //current dragging element
+            let draggingEle;
+            let placeholder;
+            let isDraggingStarted = false;
+
+            //pos of mouse relative to dragging element
+            let x = 0;
+            let y = 0;
+
+            const swap = function (nodeA, nodeB) {
+                const parentA = nodeA.parentNode;
+                const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+
+                // move nodeA to before the nodeB
+                nodeB.parentNode.insertBefore(nodeA, nodeB);
+
+                // move nodeB to before the sibling of nodeA
+                parentA.insertBefore(nodeB, siblingA);
+            }
+
+            const mouseDownHandler = function (e) {
+                draggingEle = e.target;
+
+                //calc mouse pos
+                const rect = draggingEle.getBoundingClientRect();
+                x = e.pageX - rect.left;
+                y = e.pageY - rect.top;
+
+                //attach listeners
+                document.addEventListener('mousemove', mouseMoveHandler);
+                document.addEventListener('mouseup', mouseUpHandler);
+            }
+
+            const mouseMoveHandler = function (e) {
+                const prevEle = draggingEle.previousElementSibling;
+                
+                const draggingRect = draggingEle.getBoundingClientRect();
+                
+                //set pos for dragging element
+                draggingEle.style.position = 'absolute'
+                draggingEle.style.top = `${e.pageY - y}px`
+                draggingEle.style.left = `${e.pageX - x}px`
+               
+                if (!isDraggingStarted) {
+                    //update
+                    isDraggingStarted=true;
+
+                    //placeholder take height of dragging element
+                    placeholder = document.createElement('div');
+                    placeholder.classList.add('placeholder');
+
+                    draggingEle.parentNode.insertBefore(
+                        placeholder,
+                        draggingEle.nextSibling
+                    )
+
+                    //set placeholder height
+                    placeholder.style.height = `${draggingRect.height}px`
+
+                }
+
+                // //set pos for dragging element
+                // draggingEle.style.position = 'absolute'
+                // draggingEle.style.top = `${e.pageY - y}px`
+                // draggingEle.style.left = `${e.pageX - x}px`
+
+                const nextEle = placeholder.nextElementSibling;
+
+                //literal edge cases
+
+                //moves item to top
+                if (prevEle && isAbove(draggingEle, prevEle)) {
+                    // the current order    -> the new order
+                    // prevEle              -> placeholder
+                    // draggingEle          -> draggingEle
+                    // placeholder          -> prevEle
+                    swap(placeholder, draggingEle)
+                    swap(placeholder, prevEle)
+                }
+
+                //moves item to bottom
+                if (nextEle && isAbove(nextEle, draggingEle)) {
+                    // the current order    -> the new order
+                    // draggingEle          -> nextEle
+                    // placeholder          -> placeholder
+                    // nextEle              -> draggingEle
+                    swap(nextEle, placeholder);
+                    swap(nextEle, draggingEle);
+                }
+            }
+
+            const mouseUpHandler = function () {
+                //remove placeholder
+                placeholder && placeholder.parentNode.removeChild(placeholder);
+
+                //reset flag
+                isDraggingStarted = false;
+
+                //remove pos styles
+                draggingEle.style.removeProperty('top');
+                draggingEle.style.removeProperty('left');
+                draggingEle.style.removeProperty('position');
+
+                x = null
+                y = null
+                draggingEle = null
+
+                //remove handlers of 'mousemove' and 'mouseup'
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.removeEventListener('mouseup', mouseUpHandler);
+            }
+
+            const isAbove = function(nodeA, nodeB) {
+                //get bounding rect of nodes
+                const rectA = nodeA.getBoundingClientRect();
+                const rectB = nodeB.getBoundingClientRect();
+
+                return (rectA.top + rectA.height)/2 < (rectB.top + rectB.height)/2
+            }
+
+            subjectElements.forEach(element => {
+                element.classList.add("draggable")
+                element.addEventListener('mousedown', mouseDownHandler)
+                settings.onclick = function() {save()}
+            });
+        }
+
+        function save() {
+            subjects = document.getElementsByClassName("subject")
+            for(var i = 0; i < subjects.length; i++) {
+                subjectOrder[i] = subjects[i].getAttribute("name")
+                localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
+            }
+        }
+
+    </script>
 </html>
