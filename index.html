@@ -11,7 +11,7 @@
         </header>
         <div id="contents"></div>
         <footer>
-            <p class="text" id="reorder" onclick="reorder()"><img id="icon" src="assets/gear.png">Reorder</p>
+            <p class="text" id="reorder" onclick="doReorder()"><img id="icon" src="assets/gear.png">Reorder</p>
             <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a href="https://github.com/BrightShard">BrightShard</a></p>
         </footer>
     </div>
@@ -62,7 +62,7 @@
             contents.appendChild(element)
         });
 
-        function reorder() {
+        function doReorder() {
             //current dragging element
             let draggingEle;
             let placeholder;
@@ -186,9 +186,11 @@
             subjectElements.forEach(element => {
                 element.classList.add("draggable")
                 element.addEventListener('mousedown', mouseDownHandler)
-                reorder.onclick = function() {save()}
                 element.onclick = ""
             });
+
+            reorder.onclick = function() {save()}
+
         }
 
         function save() {
