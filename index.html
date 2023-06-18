@@ -11,7 +11,7 @@
         <div id="contents"></div>
         <footer>
             <p class="text" id="settings" onclick="rearrange()"><img id="icon" src="assets/gear.png">Settings</p>
-            <p class="text" id="credit">made by <a href="https://github.com/Axilotl17/Enough-Said">Axilotl</a></p>
+            <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a href="https://github.com/BrightShard">BrightShard</a></p>
         </footer>
     </div>
     <div id="main">
@@ -155,6 +155,7 @@
             div.style = ""
             div.className = "subject"
             div.appendChild(a)
+            div.setAttribute("name", element)
             subjectElements.push(div)
         });
         subjectElements.forEach(element => {
@@ -283,10 +284,18 @@
             }
 
             subjectElements.forEach(element => {
-                element.className = "draggable"
+                element.classList.add("draggable")
                 element.addEventListener('mousedown', mouseDownHandler)
-                settings.onclick = "reload()"
+                settings.onclick = function() {save()}
             });
+        }
+
+        function save() {
+            subjects = document.getElementsByClassName("subject")
+            for(var i = 0; i < subjects.length; i++) {
+                subjectOrder[i] = subjects[i].getAttribute("name")
+                localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
+            }
         }
 
     </script>
