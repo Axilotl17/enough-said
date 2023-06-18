@@ -14,3 +14,25 @@ body {
     position: absolute;
     text-align: center;
 }
+
+#reload img {
+    width: 40px;
+    padding: 4px;
+    margin: 4px;
+    border-width: 4px;
+    border-style: outset;
+}
+
+#reload p {
+    font-size: 20px;
+    position: fixed;
+    top: 2px;
+    left: 72px;
+    animation-duration: .5s;
+}
+
+@keyframes fadein {
+    0% {opacity: 0%;};
+    50% {opacity: 35%;};
+    100% {opacity: 100%;};
+}
