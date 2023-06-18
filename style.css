@@ -55,8 +55,10 @@ body {
     margin: 4px;
 }
 #reorder {
+    height: fit-content;
     float: right;
     margin-right: 16px;
+    cursor: pointer;
 }
 #credit {
     float:left;
@@ -92,7 +94,7 @@ a {
 }
 
 .subject:hover {
-    background-color: rgb(179, 179, 179);
+    background-color: rgb(194, 194, 194);
 }
 
 .draggable {
@@ -108,14 +110,20 @@ a {
 }
 .save {
     padding: 4px;
-    margin: 2px;
+    margin-right: 6px;
     margin-top: 24px;
     display: none;
     float: right;
-    border-style: solid;
+    border-style:solid;
+    border-top-width: 2px;
+    border-left-width: 2px;
     animation-name: pulse;
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
+    cursor: pointer;
+}
+.save:hover {
+    background-color: rgb(194, 194, 194);
 }
 
 @keyframes pulse {
