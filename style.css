@@ -106,3 +106,20 @@ a {
 .draggable:hover {
     background-color: inherit;
 }
+.save {
+    padding: 4px;
+    margin: 2px;
+    margin-top: 24px;
+    display: none;
+    float: right;
+    border-style: solid;
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+    0%   {border-color: black;}
+    50%  {border-color: red;}
+    100% {border-color: black;}
+}

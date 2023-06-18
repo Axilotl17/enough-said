@@ -11,6 +11,8 @@
         </header>
         <div id="contents"></div>
         <footer>
+            <p class="text save" id="confirm" onclick="save()">Confirm</p>
+            <p class="text save" id="reset" onclick="tryReset()">Reset</p>
             <p class="text" id="reorder" onclick="doReorder()"><img id="icon" src="assets/gear.png">Reorder</p>
             <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a href="https://github.com/BrightShard">BrightShard</a></p>
         </footer>
@@ -25,8 +27,7 @@
     <script>
         //setting default order if none is found
         if(localStorage.getItem("subjectOrder") == null){
-            var subjectOrder = ["Wires", "The Button", "Keypads", "Simon Says", "Who's on First", "Memory", "Morse Code", "Complicated Wires", "Wire Sequences", "Mazes", "Passwords", "Knobs"]
-            localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
+            reset()
         }
 
         //setting vars
@@ -124,18 +125,12 @@
 
                 }
 
-                // //set pos for dragging element
-                // draggingEle.style.position = 'absolute'
-                // draggingEle.style.top = `${e.pageY - y}px`
-                // draggingEle.style.left = `${e.pageX - x}px`
-
                 const nextEle = placeholder.nextElementSibling;
 
                 //literal edge cases
 
                 //moves item to top
                 if (prevEle && isAbove(draggingEle, prevEle)) {
-                    // the current order    -> the new order
                     // prevEle              -> placeholder
                     // draggingEle          -> draggingEle
                     // placeholder          -> prevEle
@@ -145,7 +140,6 @@
 
                 //moves item to bottom
                 if (nextEle && isAbove(nextEle, draggingEle)) {
-                    // the current order    -> the new order
                     // draggingEle          -> nextEle
                     // placeholder          -> placeholder
                     // nextEle              -> draggingEle
@@ -187,10 +181,12 @@
                 element.classList.add("draggable")
                 element.addEventListener('mousedown', mouseDownHandler)
                 element.onclick = ""
+                element.childNodes[0].style.pointerEvents = "none"
             });
 
-            reorder.onclick = function() {save()}
-
+            reorder.style.display = "none"
+            document.getElementById("confirm").style.display = "block"
+            document.getElementById("reset").style.display = "block"
         }
 
         function save() {
@@ -201,6 +197,15 @@
                 window.location.reload()
             }
         }
-
+        function tryReset() {
+            if(confirm("Are you sure you would like to reset order?")) {
+                reset()
+                window.location.reload()
+            }
+        }
+        function reset() {
+            var subjectOrder = ["Wires", "The Button", "Keypads", "Simon Says", "Who's on First", "Memory", "Morse Code", "Complicated Wires", "Wire Sequences", "Mazes", "Passwords", "Knobs"]
+            localStorage.setItem("subjectOrder", JSON.stringify(subjectOrder))
+        }
     </script>
 </html>
