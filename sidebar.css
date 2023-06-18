@@ -1,0 +1,145 @@
+#sidebar {
+    width: 400px;
+    height: 100vh;
+    float: left;
+    background: lightgray;
+    height: 100vh;
+}
+
+#sidebar #title #logo {
+    width: 52px;
+    margin-left: 16px;
+    margin-right: 8px;
+    vertical-align:-10px;
+}
+
+#sidebar #title {
+    font-size: 32px;
+    margin: 0px;
+}
+
+#reorder {
+    height: fit-content;
+    float: right;
+    margin-right: 16px;
+    cursor: pointer;
+}
+
+#reorder #icon {
+    position: relative;
+    top: 8px;
+    width: 20px;
+    margin: 4px;
+}
+
+#credit {
+    float:left;
+    margin-left: 16px;
+    margin-top: 32px;
+    font-size: 14px;
+}
+
+#credit a {
+    color: #0000EE;
+    text-decoration: underline;
+}
+
+header {
+    padding: 8px;
+    padding-left: 40px;
+    margin: 6px;
+    margin-bottom: 12px;
+}
+
+footer {
+    position: sticky;
+    bottom: 10px;
+}
+
+.subject-text {
+    font-size: 22px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.icon {
+    width: 30px;
+    vertical-align: -11px;
+    padding: 4px;
+    padding-right: 8px;
+}
+
+.subject {
+    margin: 6px;
+    cursor: pointer;
+    padding-left: 40px;
+}
+
+.subject:hover {
+    background-color: rgb(194, 194, 194);
+}
+
+.current {
+    border-style: solid;
+    border-left-color: blue;
+    border-width: 0px;
+    border-left-width: 8px;
+    background: skyblue;
+    padding-left: 32px;
+}
+
+.current:hover {
+    background-color:rgb(114, 168, 255)
+}
+
+.draggable {
+    cursor: move;
+    user-select: none;
+    border-style:dotted;
+    border-width: 2px;
+    margin: 2px;
+    padding-right: 40px;
+    padding-left: 40px;
+    background-color: inherit;
+}
+
+.draggable:hover {
+    background-color: inherit;
+}
+
+.save {
+    padding: 4px;
+    margin-right: 6px;
+    margin-top: 24px;
+    display: none;
+    float: right;
+    border-style:solid;
+    border-top-width: 2px;
+    border-left-width: 2px;
+    animation-name: pulse;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    cursor: pointer;
+}
+
+.save:hover {
+    background-color: rgb(194, 194, 194);
+}
+
+@keyframes pulse {
+    0%   {border-color: black;}
+    50%  {border-color: red;}
+    100% {border-color: black;}
+}
+
+iframe{
+    background-color: transparent;
+    border: 0px none transparent;
+    padding: 0px;
+    overflow: hidden;
+    width: calc(100% - 400px);
+    height: 100vh;
+}
