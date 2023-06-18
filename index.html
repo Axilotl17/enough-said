@@ -17,19 +17,12 @@
             <p class="text" id="credit">made by <a href="https://github.com/Axilotl17">Axilotl</a> & <a href="https://github.com/BrightShard">BrightShard</a></p>
         </footer>
     </div>
-    <div id="main">
-        <img id="logo" src="./assets/logo.png">
-        <br>
-        <h1 class="text" id="title" >Enough Said</h1>
-        <h2 class="text" id="subtitle">A customizable, interactive, and improved manual for<br>
-            Keep Talking and Nobody Explodes (KTaNE).<br>And that's Enough Said.</h2>
-    </div>
+    <iframe id="subject" src="./home.html">Your browser does not support iframes.</iframe>
     <script>
         //setting default order if none is found
         if(localStorage.getItem("subjectOrder") == null){
             reset()
         }
-
         //setting vars
         var subjectOrder = JSON.parse(localStorage.getItem("subjectOrder"))
         var subjectElements = []
@@ -37,6 +30,7 @@
         //setting html refs
         const reorder = document.getElementById("reorder")
         const contents = document.getElementById("contents")
+        const subject = document.getElementById("subject")
 
         console.log(subjectOrder) //verbose
 
@@ -46,7 +40,7 @@
             var div = document.createElement("div")
             var a = document.createElement("a")  
             var img = document.createElement("img")     
-            div.onclick = function() {window.location.href = element.toLowerCase() + ".html"}
+            div.onclick = function() {subject.src = `subjects/${element.toLowerCase()}.html`}
             a.className = "text subject-text"
             img.className = "icon"
             img.src  = `./assets/icons/${element.toLowerCase()}.png`
@@ -59,6 +53,7 @@
             div.setAttribute("name", element)
             subjectElements.push(div)
         });
+
         subjectElements.forEach(element => {
             contents.appendChild(element)
         });
