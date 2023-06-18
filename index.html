@@ -9,7 +9,10 @@
             <h3 id="title" class="text"><a href="./index.html"><img id="logo" src="./assets/logo.png">Enough Said</a></h3>
         </header>
         <div id="contents"></div>
-        <footer id="settings"><p class="text"><img id="icon" src="assets/gear.png">Settings</p></footer>
+        <footer>
+            <p class="text" id="settings" onclick="rearrange()"><img id="icon" src="assets/gear.png">Settings</p>
+            <p class="text" id="credit">made by <a href="https://github.com/Axilotl17/Enough-Said">Axilotl</a></p>
+        </footer>
     </div>
     <div id="main">
         <img id="logo" src="./assets/logo.png">
@@ -61,8 +64,8 @@
         }
         #sidebar #title #logo {
             width: 52px;
-            padding-left: 8px;
-            padding-right: 8px;
+            margin-left: 16px;
+            margin-right: 8px;
             vertical-align:-6px;
         }
         #sidebar #title {
@@ -76,13 +79,24 @@
             margin: 4px;
         }
         #settings {
-            position: sticky;
             float: right;
             margin-right: 16px;
-            bottom: 10px;
-        
         }
-        .subject {
+        #credit {
+            float:left;
+            margin-left: 16px;
+            margin-top: 32px;
+            font-size: 14px;
+        }
+        #credit a {
+            color: #0000EE;
+            text-decoration: underline;
+        }
+        footer {
+            position: sticky;
+            bottom: 10px;
+        }
+        .subject-text {
             font-size: 22px;
         }
         a {
@@ -92,10 +106,21 @@
         .icon {
             width: 30px;
             vertical-align: -14px;
-            padding: 8px;
+            padding: 4px;
+            padding-right: 8px;
             padding-left: 40px
         }
-        
+        .draggable {
+            cursor: move;
+            user-select: none;
+            border-style:dotted;
+            border-width: 2px;
+            margin: 2px;
+            padding-right: 40px;
+        }
+        .subject {
+            margin: 6px;
+        }
     </style>
     <script>
         //setting default order if none is found
@@ -106,25 +131,163 @@
 
         //setting vars
         var subjectOrder = JSON.parse(localStorage.getItem("subjectOrder"))
+        var subjectElements = []
 
         //setting html refs
+        const settings = document.getElementById("settings")
         const contents = document.getElementById("contents")
 
         console.log(subjectOrder) //verbose
 
         //dynamically add subjects
         subjectOrder.forEach(element => {
+            //create menu item
+            var div = document.createElement("div")
             var a = document.createElement("a")  
-            var img = document.createElement("img")        
+            var img = document.createElement("img")     
             a.href = element.toLowerCase() + ".html"
-            a.className = "text subject"
-            //a.id = "element.toLowerCase()"
+            a.className = "text subject-text"
             img.className = "icon"
-            img.src = `./assets/icons/${element.toLowerCase()}.png`
+            img.src  = `./assets/icons/${element.toLowerCase()}.png`
             a.appendChild(img)
             a.innerHTML = a.innerHTML + element
-            contents.appendChild(a)
-            contents.appendChild(document.createElement("br"))
+            a.append(document.createElement("br"))
+            div.style = ""
+            div.className = "subject"
+            div.appendChild(a)
+            subjectElements.push(div)
         });
+        subjectElements.forEach(element => {
+            contents.appendChild(element)
+        });
+
+        function rearrange() {
+            //current dragging element
+            let draggingEle;
+            let placeholder;
+            let isDraggingStarted = false;
+
+            //pos of mouse relative to dragging element
+            let x = 0;
+            let y = 0;
+
+            const swap = function (nodeA, nodeB) {
+                const parentA = nodeA.parentNode;
+                const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+
+                // move nodeA to before the nodeB
+                nodeB.parentNode.insertBefore(nodeA, nodeB);
+
+                // move nodeB to before the sibling of nodeA
+                parentA.insertBefore(nodeB, siblingA);
+            }
+
+            const mouseDownHandler = function (e) {
+                draggingEle = e.target;
+
+                //calc mouse pos
+                const rect = draggingEle.getBoundingClientRect();
+                x = e.pageX - rect.left;
+                y = e.pageY - rect.top;
+
+                //attach listeners
+                document.addEventListener('mousemove', mouseMoveHandler);
+                document.addEventListener('mouseup', mouseUpHandler);
+            }
+
+            const mouseMoveHandler = function (e) {
+                const prevEle = draggingEle.previousElementSibling;
+                
+                const draggingRect = draggingEle.getBoundingClientRect();
+                
+                //set pos for dragging element
+                draggingEle.style.position = 'absolute'
+                draggingEle.style.top = `${e.pageY - y}px`
+                draggingEle.style.left = `${e.pageX - x}px`
+               
+                if (!isDraggingStarted) {
+                    //update
+                    isDraggingStarted=true;
+
+                    //placeholder take height of dragging element
+                    placeholder = document.createElement('div');
+                    placeholder.classList.add('placeholder');
+
+                    draggingEle.parentNode.insertBefore(
+                        placeholder,
+                        draggingEle.nextSibling
+                    )
+
+                    //set placeholder height
+                    placeholder.style.height = `${draggingRect.height}px`
+
+                }
+
+                // //set pos for dragging element
+                // draggingEle.style.position = 'absolute'
+                // draggingEle.style.top = `${e.pageY - y}px`
+                // draggingEle.style.left = `${e.pageX - x}px`
+
+                const nextEle = placeholder.nextElementSibling;
+
+                //literal edge cases
+
+                //moves item to top
+                if (prevEle && isAbove(draggingEle, prevEle)) {
+                    // the current order    -> the new order
+                    // prevEle              -> placeholder
+                    // draggingEle          -> draggingEle
+                    // placeholder          -> prevEle
+                    swap(placeholder, draggingEle)
+                    swap(placeholder, prevEle)
+                }
+
+                //moves item to bottom
+                if (nextEle && isAbove(nextEle, draggingEle)) {
+                    // the current order    -> the new order
+                    // draggingEle          -> nextEle
+                    // placeholder          -> placeholder
+                    // nextEle              -> draggingEle
+                    swap(nextEle, placeholder);
+                    swap(nextEle, draggingEle);
+                }
+            }
+
+            const mouseUpHandler = function () {
+                //remove placeholder
+                placeholder && placeholder.parentNode.removeChild(placeholder);
+
+                //reset flag
+                isDraggingStarted = false;
+
+                //remove pos styles
+                draggingEle.style.removeProperty('top');
+                draggingEle.style.removeProperty('left');
+                draggingEle.style.removeProperty('position');
+
+                x = null
+                y = null
+                draggingEle = null
+
+                //remove handlers of 'mousemove' and 'mouseup'
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.removeEventListener('mouseup', mouseUpHandler);
+            }
+
+            const isAbove = function(nodeA, nodeB) {
+                //get bounding rect of nodes
+                const rectA = nodeA.getBoundingClientRect();
+                const rectB = nodeB.getBoundingClientRect();
+
+                return (rectA.top + rectA.height)/2 < (rectB.top + rectB.height)/2
+            }
+
+            subjectElements.forEach(element => {
+                element.className = "draggable"
+                element.addEventListener('mousedown', mouseDownHandler)
+                settings.onclick = "reload()"
+            });
+        }
+
     </script>
 </html>
