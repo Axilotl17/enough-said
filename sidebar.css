@@ -4,6 +4,7 @@
     float: left;
     background: lightgray;
     height: 100vh;
+    position: relative;
 }
 
 #sidebar #title #logo {
@@ -79,6 +80,7 @@ a {
     margin: 6px;
     cursor: pointer;
     padding-left: 40px;
+    width: calc(100% - 46px - 5px)
 }
 
 .subject:hover {
@@ -107,6 +109,7 @@ a {
     padding-right: 40px;
     padding-left: 40px;
     background-color: inherit;
+    width: calc(100% - 90px)
 }
 
 .draggable:hover {
