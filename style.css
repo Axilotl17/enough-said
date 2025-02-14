@@ -91,6 +91,12 @@ p {
     width: 100px;
 }
 
+.clue {
+    vertical-align: top;
+    width: 240px;
+    padding-bottom: 16px;
+}
+
 /* The switch - the box around the slider */
 .switch {
     position: relative;
