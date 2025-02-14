@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../style.css" />
+    </head>
+    <div id="main">
+        <p>Serial number DOES contain a vowel:</p>
+        <table>
+            <tr>
+                <th>Color Flashed ⇨</th>
+                <th class="red flash"></th>
+                <th class="blue flash"></th>
+                <th class="green flash"></th>
+                <th class="yellow flash"></th>
+            </tr>
+            <tr>
+                <th>No strikes</th>
+                <td class="blue"></td>
+                <td class="red"></td>
+                <td class="yellow"></td>
+                <td class="green"></td>
+            </tr>
+            <tr>
+                <th>1 strike</th>
+                <td class="yellow"></td>
+                <td class="green"></td>
+                <td class="blue"></td>
+                <td class="red"></td>
+            </tr>
+            <tr>
+                <th>2 strikes</th>
+                <td class="green"></td>
+                <td class="red"></td>
+                <td class="yellow"></td>
+                <td class="blue"></td>
+            </tr>
+        </table>
+        <br>
+        <p>Serial number does NOT contain a vowel:</p>
+        <table>
+            <tr>
+                <th>Color Flashed ⇨</th>
+                <th class="red flash"></th>
+                <th class="blue flash"></th>
+                <th class="green flash"></th>
+                <th class="yellow flash"></th>
+            </tr>
+            <tr>
+                <th>No strikes</th>
+                <td class="blue"></td>
+                <td class="yellow"></td>
+                <td class="green"></td>
+                <td class="red"></td>
+            </tr>
+            <tr>
+                <th>1 strike</th>
+                <td class="red"></td>
+                <td class="blue"></td>
+                <td class="yellow"></td>
+                <td class="green"></td>
+            </tr>
+            <tr>
+                <th>2 strikes</th>
+                <td class="yellow"></td>
+                <td class="green"></td>
+                <td class="blue"></td>
+                <td class="red"></td>
+            </tr>
+        </table>
+        <br>
+        <div class="box">
+            <p>Flash direction</p>
+            <label class="switch" onchange="generate()">
+                <input id="flashDirection" type="checkbox">
+                <span class="slider round"></span>
+            </label><br>
+            <p>Input direction</p>
+            <label class="switch">  
+                <input id="inputDirection" type="checkbox" checked="true" onchange="generate()">
+                <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+    <script>
+
+        const colors = ["red", "blue", "green", "yellow"]
+        const colorcode = ["rgb(255, 0, 0)", "rgb(0, 0, 255)", "rgb(0, 200, 0)", "rgb(200, 200, 0)"]
+        const directions = ["left", "up", "down", "right"]
+
+        function generate() {
+            colors.forEach(function(color){
+                Array.from(document.getElementsByClassName(color)).forEach(function(element){
+                    if (element.nodeName == "TH") {
+                        if(document.getElementById("flashDirection").checked) {
+                            element.innerHTML = capitalizeFirstLetter(directions[colors.indexOf(color)])
+                            element.style.color = "black"
+                        } else {
+                            element.innerHTML = capitalizeFirstLetter(color)
+                            element.style.color = colorcode[colors.indexOf(color)]
+                        }
+                    } else if (element.nodeName == "TD") {
+                        if(document.getElementById("inputDirection").checked) {
+                            element.innerHTML = capitalizeFirstLetter(directions[colors.indexOf(color)])
+                            element.style.color = "black"
+                        } else {
+                            element.innerHTML = capitalizeFirstLetter(color)
+                            element.style.color = colorcode[colors.indexOf(color)]
+                        }
+                    }
+                })     
+            })
+        }
+
+        function capitalizeFirstLetter(val) {
+            return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+        }
+        generate()
+    </script>
+</html>
